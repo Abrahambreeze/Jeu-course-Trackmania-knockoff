@@ -1,10 +1,9 @@
-"""Lecture des touches maintenues pendant la course, pour chaque joueur."""
+"""Lecture des touches des joueurs."""
 
 import pygame
 
 
-# Joueur 1 : ZQSD (AZERTY) ou WASD (QWERTY). Les deux dispositions sont
-# acceptées pour que le jeu marche quel que soit le clavier.
+# Joueur 1 : ZQSD (clavier AZERTY) ou WASD (clavier QWERTY).
 PLAYER_1_MAPPING = {
     pygame.K_z: "accelerate",
     pygame.K_w: "accelerate",
@@ -26,18 +25,16 @@ PLAYER_2_MAPPING = {
 
 
 class InputHandler:
-    """Traduit l'état du clavier en un dictionnaire d'actions pour un joueur."""
+    """Transforme les touches d'un joueur en actions."""
 
     def __init__(self, mapping: dict[int, str]):
-        """mapping : association touche pygame -> nom d'action."""
+        """mapping : quelle touche fait quelle action."""
         self.mapping = mapping
 
     def get_inputs(self) -> dict[str, bool]:
-        """Renvoie {action: bool} indiquant les actions actives à cette frame.
+        """Renvoie les actions des touches appuyées, par exemple {"accelerate": True}.
 
-        On utilise pygame.key.get_pressed() (état instantané du clavier) plutôt
-        que les événements KEYDOWN, car une touche maintenue doit agir à
-        chaque frame et pas seulement au moment où elle est enfoncée.
+        get_pressed() donne les touches maintenues, à chaque frame.
         """
         keys = pygame.key.get_pressed()
         actions = {action: False for action in self.mapping.values()}
